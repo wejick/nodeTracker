@@ -17,8 +17,9 @@ function start(){
       function fileList(){
 
       }
-    }
+    })
   });
-});
-  server.listen(1337);
+server.listen(1337);
+}
+
 exports.start=start
