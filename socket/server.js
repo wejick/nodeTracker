@@ -13,18 +13,23 @@ function start(){
     console.log("Connection from : "+socket.remoteAddress);
     client.push(socket); // simpan socket ke array client
     var clName=socket.name;
+    //event on error
+    socket.on("error",function(error) {
+	console.log(error);
+      }
+    );
     //event on data arrive
     socket.on("data",function(data){
       var command = ['FL','FD','NA'];
       data = data.replace(/(\r\n|\n|\r)/gm,""); // get rid line break at last character
-      var req = data.toString().split(";");
-      socket.write(data);
+      var req = data.toString().split(";;");
+      //ssocket.write(data);
 
       // write request to console
       for(var i = 0;i < req.length;i++){
 	  console.log(" Query["+i+"] : "+req[i]);
       }
- 
+
       //handle command request
       if(req[0] == "FL") {
 	fileList();
@@ -38,12 +43,14 @@ function start(){
       
       //command request function
       function fileList(){
+	var pesan = new Array();
 	db.serialize(function(){
-	  db.each("SELECT f.id_file,f.nama,f.bitrate,f.samplerate,f.size FROM file as f", function(err,row){
-	    socket.write(row.id_file+" "+row.nama+" "+row.bitrate+" "+row.samplerate+" "+row.size);
-	  })
+	  db.all("SELECT f.id_file,f.nama,f.bitrate,f.samplerate,f.size FROM file as f", function(err,row){
+	    pesan.push(row);
+	    console.log(pesan);
+	    socket.write(JSON.stringify(row));
+	  });	  
 	});
-	socket.write("FileList requested");
       }
       //get file detail
       function fileDetail(fileId){
