@@ -57,8 +57,11 @@ function start(){
       //get file detail
       function fileDetail(fileId){
 	db.serialize(function(){
-	  db.all("select f.id_file, h.ip, hfr.block_avail from file as f, host_file_rel as hfr , host as h where f.id_file = "+fileId,function(err,row){
-	  socket.write(JSON.stringify(row));	    
+	  var query = "select f.id_file, h.ip, hfr.block_avail from file as f, file_host_rel as hfr , host as h where f.id_file = "+fileId;
+	  db.all(query,function(err,row){
+	    socket.write(JSON.stringify(row));
+	//	console.log(row);
+	//	console.log(query);
 	  });
 	}
 	);
