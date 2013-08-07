@@ -8,7 +8,7 @@ var client=[];
 function start(){
   var server = net.createServer(function(socket){
     socket.setEncoding("UTF8")
-    socket.write("You're connected to noSock peer to peer tracker \r\n");
+//    socket.write("You're connected to noSock peer to peer tracker \r\n");
     socket.name = socket.remoteAddress;
     console.log("Connection from : "+socket.remoteAddress);
     client.push(socket); // simpan socket ke array client
@@ -37,7 +37,7 @@ function start(){
       else if(req[0] == "FD")
 	fileDetail(req[1]);
       else if(req[0] == "NA")
-	nodeActive(req[1]);
+	nodeActive(socket.remoteAddress);
       else if(req[0] == "UP")
 	nodeUpdate(req);
       else
@@ -51,13 +51,14 @@ function start(){
 	    //pesan.push(row);
 	    //console.log(pesan);
 	    socket.write(JSON.stringify(row));
+	    console.log(JSON.stringify(row));
 	  });
 	});
       }
       //get file detail
       function fileDetail(fileId){
 	db.serialize(function(){
-	  var query = "select f.id_file, h.ip, hfr.block_avail from file as f, file_host_rel as hfr , host as h where f.id_file = "+fileId;
+	  var query = "select f.id_file, h.ip, hfr.block_avail from file as f, file_host_rel as hfr , host as h where f.id_file = "+fileId+" AND hfr.id_file="+fileId;
 	  db.all(query,function(err,row){
 	    socket.write(JSON.stringify(row));
 	//	console.log(row);
