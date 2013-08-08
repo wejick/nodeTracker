@@ -78,7 +78,7 @@ function start(){
 	      db.run("INSERT INTO host (ip,active,time) VALUES ('"+nodeId+"',1,"+time.getTime()+")");
 	    } else
 	      // set node status to active
-	      db.run("UPDATE host SET active= 1, time= "+time.getTime()+"WHERE ip='"+nodeId+"'");
+	      db.run("UPDATE host SET active= 1, time= "+time.getTime()+" WHERE ip='"+nodeId+"'");
 	  })
 	});
 	socket.write("Node "+nodeId+" is nodeActive");
