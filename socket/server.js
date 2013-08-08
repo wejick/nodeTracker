@@ -114,6 +114,23 @@ function start(){
       }
     })
   });
+// set timeout 5 minutes (30000)
+// run node active checking
+function isActive(){
+	var now = new Date;
+	db.serialize(function(){
+			console.log("run is active");
+			db.each("select * from host",function(err, row){
+				var diff = now.getTime() - row.time;
+				//console.log(diff+" "+now.getTime()+" "+row.time);
+				if(diff>6000) { // more than 10 minutes
+					db.run("UPDATE host SET active = 0 WHERE ip = '"+row.ip+"'");
+					console.log("run update\n");
+				}
+			});
+	});
+}
+setInterval(isActive,3000);
 server.listen(1337);
 }
 
