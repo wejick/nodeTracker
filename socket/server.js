@@ -23,7 +23,7 @@ function start(){
       var command = ['FL','FD','NA'];
       data = data.replace(/(\r\n|\n|\r)/gm,""); // get rid line break at last character
       var req = data.toString().split(";;");
-      //ssocket.write(data);
+      //socket.write(data);
 
       // write request to console
       for(var i = 0;i < req.length;i++){
@@ -71,13 +71,14 @@ function start(){
       function nodeActive(nodeId){
 	db.serialize(function(){
 	  db.all("SELECT * FROM host WHERE ip='"+nodeId+"'", function(err,row){
-	    console.log(row.length < 1);
+	    //console.log(row.length < 1);
+		var time = new Date;
 	    if(row.length < 1) {
 	      // add host if we can't find it
-	      db.run("INSERT INTO host (ip,active) VALUES ('"+nodeId+"',1)");
+	      db.run("INSERT INTO host (ip,active,time) VALUES ('"+nodeId+"',1,"+time.getTime()+")");
 	    } else
 	      // set node status to active
-	      db.run("UPDATE host SET active= 1 WHERE ip='"+nodeId+"'");
+	      db.run("UPDATE host SET active= 1, time= "+time.getTime()+"WHERE ip='"+nodeId+"'");
 	  })
 	});
 	socket.write("Node "+nodeId+" is nodeActive");
