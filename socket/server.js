@@ -58,11 +58,14 @@ function start(){
       //get file detail
       function fileDetail(fileId){
 	db.serialize(function(){
-	  var query = "select f.id_file, h.ip, hfr.block_avail from file as f, file_host_rel as hfr , host as h where f.id_file = "+fileId+" AND hfr.id_file="+fileId;
+	  var query = "SELECT file.nama , host.ip, file_host_rel.block_avail FROM file_host_rel \
+INNER JOIN file ON file_host_rel.id_file = file.id_file \
+INNER JOIN host ON file_host_rel.id_host = host.id_host \
+WHERE file.id_file = "+fileId;
 	  db.all(query,function(err,row){
 	    socket.write(JSON.stringify(row));
-	//	console.log(row);
-	//	console.log(query);
+		console.log(row);
+		console.log(query);
 	  });
 	}
 	);
