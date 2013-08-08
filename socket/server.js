@@ -61,7 +61,7 @@ function start(){
 	  var query = "SELECT file.nama , host.ip, file_host_rel.block_avail FROM file_host_rel \
 INNER JOIN file ON file_host_rel.id_file = file.id_file \
 INNER JOIN host ON file_host_rel.id_host = host.id_host \
-WHERE file.id_file = "+fileId;
+WHERE host.active = 1 AND file.id_file = "+fileId;
 	  db.all(query,function(err,row){
 	    socket.write(JSON.stringify(row));
 		console.log(row);
@@ -82,6 +82,7 @@ WHERE file.id_file = "+fileId;
 	    } else
 	      // set node status to active
 	      db.run("UPDATE host SET active= 1, time= "+time.getTime()+" WHERE ip='"+nodeId+"'");
+		console.log(nodeId+" active");
 	  })
 	});
 	socket.write("Node "+nodeId+" is nodeActive");
@@ -126,14 +127,15 @@ function isActive(){
 			db.each("select * from host",function(err, row){
 				var diff = now.getTime() - row.time;
 				//console.log(diff+" "+now.getTime()+" "+row.time);
-				if(diff>60000) { // more than 10 minutes
+				if(diff>600000) { // more than 10 minutes
 					db.run("UPDATE host SET active = 0 WHERE ip = '"+row.ip+"'");
-					console.log("run update\n");
-				}
+					console.log(row.ip+" is inactive\n");
+				} else
+					console.log(row.ip+" is active\n");
 			});
 	});
 }
-setInterval(isActive,30000);
+setInterval(isActive,300000);
 server.listen(1337);
 }
 
