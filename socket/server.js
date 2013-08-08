@@ -123,14 +123,14 @@ function isActive(){
 			db.each("select * from host",function(err, row){
 				var diff = now.getTime() - row.time;
 				//console.log(diff+" "+now.getTime()+" "+row.time);
-				if(diff>6000) { // more than 10 minutes
+				if(diff>60000) { // more than 10 minutes
 					db.run("UPDATE host SET active = 0 WHERE ip = '"+row.ip+"'");
 					console.log("run update\n");
 				}
 			});
 	});
 }
-setInterval(isActive,3000);
+setInterval(isActive,30000);
 server.listen(1337);
 }
 
