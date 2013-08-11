@@ -46,7 +46,10 @@ function start() {
 						nodeUpdate(req);
 					}
 				);
-			} else
+			} 
+			else if(req[0] == "ADD")
+				add(req);
+			else
 				socket.write("Unspecified Command");
 
 			//command request function
@@ -62,7 +65,7 @@ function start() {
 					});
 				});
 			}
-			//get file detail
+			//get file detail from active host
 
 			function fileDetail(fileId) {
 				db.serialize(function () {
@@ -125,6 +128,15 @@ WHERE host.active = 1 AND file.id_file = " + fileId;
 						}
 					);
 				});
+			}			
+			// add new file
+			function add(info) {
+				//filename, bitrate, samplerate, size
+				var query = "INSERT INTO file(nama,bitrate,samplerate,size) VALUES('"+info[1]+"',"+info[2]+","+info[3]+","+info[4]+")";
+				db.serialize(function () { 
+					db.run(query);
+				});
+				console.log("ADD "+query);				
 			}
 		})
 	});
