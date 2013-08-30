@@ -60,9 +60,9 @@ function start() {
 								var id_file = row.id_file;
 								req.push(id_file);								
 								nodeUpdateName(req);
+								console.log("Request isinya : "+req);
 							}
-						);
-						console.log("Request isinya : "+req);
+						);						
 					}
 				);
 			} 
@@ -121,12 +121,13 @@ WHERE host.active = 1 AND file.id_file = " + fileId;
 			// gimana kalau ada file yang terhapus/ sudah tak tersedia?
 
 			function nodeUpdate(info) {
+				// 0 UN | 1 Filename | 2 block_avail | 3 id_host | 4 id_file
 				db.serialize(function () {
 					console.log(info[3] + " " + socket.remoteAddress);
-					db.all("SELECT id_file, id_host FROM file_host_rel where id_file = " + info[3] + " AND id_host = " + info[3],
+					db.all("SELECT id_file, id_host FROM file_host_rel where id_file = " + info[4] + " AND id_host = " + info[3],
 						function (err, row) {
 							if (row == undefined || row.length < 1) {
-								var query = "INSERT INTO file_host_rel(id_file, id_host,block_avail) VALUES (" + info[1] + "," + info[3] + "," + info[2] + ")"
+								var query = "INSERT INTO file_host_rel(id_file, id_host,block_avail) VALUES (" + info[4] + "," + info[3] + "," + info[2] + ")"
 								console.log(query);
 								db.all(query,
 									function (err, row) {
@@ -135,7 +136,7 @@ WHERE host.active = 1 AND file.id_file = " + fileId;
 									}
 								);
 							} else {
-								var query = "UPDATE file_host_rel SET block_avail = " + info[2] + " WHERE id_file = " + info[1] + " AND id_host= " + info[3];
+								var query = "UPDATE file_host_rel SET block_avail = " + info[2] + " WHERE id_file = " + info[4] + " AND id_host= " + info[3];
 								console.log(query);
 								db.all(query,
 									function (err, row) {
