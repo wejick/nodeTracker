@@ -150,7 +150,6 @@ WHERE host.active = 1 AND file.id_file = " + fileId;
 			}
 			function nodeUpdateName(info) {
 			// 0 UN | 1 Filename | 2 block_avail | 3 id_host | 4 id_file
-			// write request to console
 			for (var i = 0; i < info.length; i++) {
 				console.log(" UNInfo[" + i + "] : " + info[i]);
 			}
