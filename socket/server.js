@@ -122,6 +122,7 @@ WHERE host.active = 1 AND file.id_file = " + fileId;
 
 			function nodeUpdate(info) {
 				// 0 UN | 1 Filename | 2 block_avail | 3 id_host | 4 id_file
+
 				db.serialize(function () {
 					console.log(info[3] + " " + socket.remoteAddress);
 					db.all("SELECT id_file, id_host FROM file_host_rel where id_file = " + info[4] + " AND id_host = " + info[3],
@@ -150,6 +151,10 @@ WHERE host.active = 1 AND file.id_file = " + fileId;
 				});
 			}
 			function nodeUpdateName(info) {
+				// write request to console
+			for (var i = 0; i < info.length; i++) {
+				console.log(" UNInfo[" + i + "] : " + info[i]);
+			}
 				db.serialize(function () {
 					console.log(info[3] + " " + socket.remoteAddress);
 					db.all("SELECT id_file, id_host FROM file_host_rel where id_file = " + info[1] + " AND id_host = " + info[3],
