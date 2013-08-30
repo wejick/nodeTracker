@@ -55,7 +55,7 @@ function start() {
 					function (err, row) {
 						var id_host = row.id_host;
 						req.push(id_host);
-						db.each("SELECT id_file FROM file WHERE nama = '" + req[2] + "'",
+						db.each("SELECT id_file FROM file WHERE nama = '" + req[1] + "'",
 							function (err, row) {
 								var id_file = row.id_file;
 								req.push(id_file);								
@@ -123,7 +123,7 @@ WHERE host.active = 1 AND file.id_file = " + fileId;
 			function nodeUpdate(info) {
 				db.serialize(function () {
 					console.log(info[3] + " " + socket.remoteAddress);
-					db.all("SELECT id_file, id_host FROM file_host_rel where id_file = " + info[1] + " AND id_host = " + info[3],
+					db.all("SELECT id_file, id_host FROM file_host_rel where id_file = " + info[3] + " AND id_host = " + info[3],
 						function (err, row) {
 							if (row == undefined || row.length < 1) {
 								var query = "INSERT INTO file_host_rel(id_file, id_host,block_avail) VALUES (" + info[1] + "," + info[3] + "," + info[2] + ")"
