@@ -54,7 +54,7 @@ function start() {
 					function (err, row) {
 						var id_host = row.id_host;
 						req.push(id_host);
-						nodeUpdateName(req);
+						//nodeUpdateName(req);
 					}
 				);
 				db.each("SELECT id_file FROM file WHERE nama = '" + req[2] + "'",
