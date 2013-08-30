@@ -49,21 +49,21 @@ function start() {
 			}
 			else if (req[0] == "UPN") {
 				// get id_host from ip
-				// should not here, but is ok :-) (dirty hack again)
+				// get id_file from filename
 				db.each("SELECT id_host FROM host WHERE ip = '" + socket.remoteAddress + "'",
 					function (err, row) {
 						var id_host = row.id_host;
 						req.push(id_host);
-						//nodeUpdateName(req);
-					}
-				);
-				db.each("SELECT id_file FROM file WHERE nama = '" + req[2] + "'",
-					function (err, row) {
-						var id_file = row.id_file;
-						req.push(id_host);
-						nodeUpdateName(req);
-					}
-				);
+									
+					db.each("SELECT id_file FROM file WHERE nama = '" + req[2] + "'",
+						function (err, row) {
+							var id_file = row.id_file;
+							req.push(id_file);
+							console.log("Request isinya : "+req);
+							nodeUpdateName(req);
+						}
+					);
+				});
 			} 
 			else if(req[0] == "ADD")
 				add(req);
