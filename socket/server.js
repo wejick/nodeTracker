@@ -50,6 +50,7 @@ function start() {
 			else if (req[0] == "UN") {
 				// get id_host from ip
 				// get id_file from filename
+				console.log("Request isinya : "+req);
 				db.each("SELECT id_host FROM host WHERE ip = '" + socket.remoteAddress + "'",
 					function (err, row) {
 						var id_host = row.id_host;
@@ -150,8 +151,7 @@ WHERE host.active = 1 AND file.id_file = " + fileId;
 			function nodeUpdateName(info) {
 				db.serialize(function () {
 					console.log(info[3] + " " + socket.remoteAddress);
-					console.log("SELECT id_file, id_host FROM file_host_rel where id_file = " + info[1] + " AND id_host = " + info[3]);
-					/*db.all("SELECT id_file, id_host FROM file_host_rel where id_file = " + info[1] + " AND id_host = " + info[3],
+					db.all("SELECT id_file, id_host FROM file_host_rel where id_file = " + info[1] + " AND id_host = " + info[3],
 						function (err, row) {
 							if (row == undefined || row.length < 1) {
 								var query = "INSERT INTO file_host_rel(id_file, id_host,block_avail) VALUES (" + info[1] + "," + info[3] + "," + info[2] + ")"
@@ -173,7 +173,7 @@ WHERE host.active = 1 AND file.id_file = " + fileId;
 								);
 							}
 						}
-					);*/
+					);
 				});
 			}			
 			// add new file
