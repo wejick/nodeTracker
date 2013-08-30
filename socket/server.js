@@ -47,7 +47,7 @@ function start() {
 					}
 				);
 			}
-			else if (req[0] == "UPN") {
+			else if (req[0] == "UN") {
 				// get id_host from ip
 				// get id_file from filename
 				db.each("SELECT id_host FROM host WHERE ip = '" + socket.remoteAddress + "'",
