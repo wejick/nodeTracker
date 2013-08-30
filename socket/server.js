@@ -19,7 +19,7 @@ function start() {
 		});
 		//event on data arrive
 		socket.on("data", function (data) {
-			var command = ['FL', 'FD', 'NA'];
+			var command = ['FL', 'FD', 'NA', 'UP', 'UN'];
 			data = data.replace(/(\r\n|\n|\r)/gm, ""); // get rid line break at last character
 			var req = data.toString().split(";;");
 			//socket.write(data);
@@ -57,11 +57,11 @@ function start() {
 						db.each("SELECT id_file FROM file WHERE nama = '" + req[2] + "'",
 							function (err, row) {
 								var id_file = row.id_file;
-								req.push(id_file);
-								console.log("Request isinya : "+req);
+								req.push(id_file);								
 								nodeUpdateName(req);
 							}
 						);
+						console.log("Request isinya : "+req);
 					}
 				);
 			} 
