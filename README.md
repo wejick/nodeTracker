@@ -20,6 +20,9 @@ We use plain text in TCP connection to talk with nodeTracker.
 1. UP;;[file id];;[block available]  
   Update available files on peers including information about available blocks.  
   >>[to do] mechanism to delete unavailable files in node  
+1. UN;;[file name];;[block available]  
+  Update available files on peers including information about available blocks, instead of using file id we can use file name as identifier.  
+  >>[to do] mechanism to delete unavailable files in node  
 1. HOSTID (Not yet implemented)  
   Get host id information  
   
